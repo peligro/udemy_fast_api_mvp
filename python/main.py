@@ -12,6 +12,7 @@ from router.ejemplo_router import router as ejemplo_router
 from router.upload_router import router as upload_router
 from router.estado_router import router as estado_router
 from router.categoria_router import router as categoria_router
+from router.negocio_router import router as negocio_router
 
 app = FastAPI()
 
@@ -52,6 +53,10 @@ app = FastAPI(
         {
             "name": "Categorías",
             "description": "API Rest Categorías"
+        },
+        {
+            "name": "Negocios",
+            "description": "API Rest Negocios"
         }
     ]
 )
@@ -74,6 +79,7 @@ app.include_router(ejemplo_router)
 app.include_router(upload_router)
 app.include_router(estado_router)
 app.include_router(categoria_router)
+app.include_router(negocio_router)
 
 #custom 404
 @app.exception_handler(status.HTTP_404_NOT_FOUND)

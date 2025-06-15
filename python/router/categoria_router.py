@@ -42,7 +42,7 @@ async def create(dto: CategoriaDto, session: Session = Depends(get_session)):
     if existe:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"estado": "error", "mensaje": "Ya existe un registro con ese nombre"}
+            detail="Ya existe un registro con ese nombre"
         )
     # ✅ Creamos el objeto Categoria pasando también el slug
     dato_db = Categoria(nombre=dto.nombre, slug=slugify(dto.nombre))
