@@ -13,6 +13,7 @@ from router.upload_router import router as upload_router
 from router.estado_router import router as estado_router
 from router.categoria_router import router as categoria_router
 from router.negocio_router import router as negocio_router
+from router.negocio_logo_router import router as negocio_logo_router
 
 app = FastAPI()
 
@@ -57,6 +58,10 @@ app = FastAPI(
         {
             "name": "Negocios",
             "description": "API Rest Negocios"
+        },
+        {
+            "name": "Negocios logo",
+            "description": "API Rest para administrar los logos de los negocios"
         }
     ]
 )
@@ -80,6 +85,8 @@ app.include_router(upload_router)
 app.include_router(estado_router)
 app.include_router(categoria_router)
 app.include_router(negocio_router)
+app.include_router(negocio_logo_router)
+
 
 #custom 404
 @app.exception_handler(status.HTTP_404_NOT_FOUND)
