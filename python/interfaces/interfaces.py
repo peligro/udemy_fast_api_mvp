@@ -29,3 +29,15 @@ class NegocioResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PlatoResponse(BaseModel):
+    id: int
+    nombre: str
+    ingredientes: str
+    precio: int
+    foto: str
+    platoscategoria: str 
+
+    class Config:
+        from_attributes = True

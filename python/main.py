@@ -14,6 +14,8 @@ from router.estado_router import router as estado_router
 from router.categoria_router import router as categoria_router
 from router.negocio_router import router as negocio_router
 from router.negocio_logo_router import router as negocio_logo_router
+from router.platos_categoria_router import router as platos_categoria_router
+from router.platos_router import router as platos_router
 
 app = FastAPI()
 
@@ -62,6 +64,14 @@ app = FastAPI(
         {
             "name": "Negocios logo",
             "description": "API Rest para administrar los logos de los negocios"
+        },
+        {
+            "name": "Platos Categorías",
+            "description": "API Rest Platos Categorías"
+        },
+        {
+            "name": "Platos",
+            "description": "API Rest Platos"
         }
     ]
 )
@@ -86,6 +96,9 @@ app.include_router(estado_router)
 app.include_router(categoria_router)
 app.include_router(negocio_router)
 app.include_router(negocio_logo_router)
+app.include_router(platos_categoria_router)
+app.include_router(platos_router)
+
 
 
 #custom 404

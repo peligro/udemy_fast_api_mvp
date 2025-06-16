@@ -7,7 +7,6 @@ class Estado(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     nombre: str
 
-    # Relaciones inversas
     usuarios: list["Usuario"] = Relationship(back_populates="estado")
     negocios: list["Negocio"] = Relationship(back_populates="estado")
 
@@ -15,10 +14,7 @@ class Estado(SQLModel, table=True):
 class Usuario(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
-    # Clave foránea hacia Estado
     estado_id: int | None = Field(default=None, foreign_key="estado.id")
-    
-    # Relación con Estado
     estado: Optional[Estado] = Relationship(back_populates="usuarios")
 
     nombre: str
@@ -28,7 +24,6 @@ class Usuario(SQLModel, table=True):
     token: str
     fecha: datetime = Field(default_factory=datetime.now)
 
-    # Relación inversa con Negocio
     negocios: list["Negocio"] = Relationship(back_populates="usuario")
 
 
@@ -37,24 +32,20 @@ class Categoria(SQLModel, table=True):
     nombre: str
     slug: str
 
-    # Relación inversa con Negocio
     negocios: list["Negocio"] = Relationship(back_populates="categoria")
 
 
 class Negocio(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
-    # Clave foránea hacia Estado
     estado_id: int | None = Field(default=None, foreign_key="estado.id")
-    estado: Optional[Estado] = Relationship(back_populates="negocios")  # ✅ Apunta a Estado.negocios
+    estado: Optional[Estado] = Relationship(back_populates="negocios")
 
-    # Clave foránea hacia Usuario
     usuario_id: int | None = Field(default=None, foreign_key="usuario.id")
-    usuario: Optional[Usuario] = Relationship(back_populates="negocios")  # ✅ Apunta a Usuario.negocios
+    usuario: Optional[Usuario] = Relationship(back_populates="negocios")
 
-    # Clave foránea hacia Categoria
     categoria_id: int | None = Field(default=None, foreign_key="categoria.id")
-    categoria: Optional[Categoria] = Relationship(back_populates="negocios")  # ✅ Apunta a Categoria.negocios
+    categoria: Optional[Categoria] = Relationship(back_populates="negocios")
 
     # Campos normales
     nombre: str = Field(max_length=100)
@@ -70,7 +61,34 @@ class Negocio(SQLModel, table=True):
     mapa: str
     descripcion: str
     fecha: datetime = Field(default_factory=datetime.now)
- 
+
+    # Relación inversa con Platos
+    platos: list["Platos"] = Relationship(back_populates="negocio")
+
+
+class PlatosCategoria(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    nombre: str
+    slug: str
+
+    # Relación inversa con Platos
+    platos: list["Platos"] = Relationship(back_populates="platoscategoria")
+
+
+class Platos(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    nombre: str
+    ingredientes: str
+    precio: int
+    foto: str
+
+    # Clave foránea hacia Negocio
+    negocio_id: int | None = Field(default=None, foreign_key="negocio.id")
+    negocio: Optional[Negocio] = Relationship(back_populates="platos")
+
+    # Clave foránea hacia PlatosCategoria
+    platoscategoria_id: int | None = Field(default=None, foreign_key="platoscategoria.id")
+    platoscategoria: Optional[PlatosCategoria] = Relationship(back_populates="platos")
 
 
 """

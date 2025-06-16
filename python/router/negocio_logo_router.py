@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Form, File, UploadFile
+from fastapi import APIRouter, Depends, status, HTTPException, Form, UploadFile
 from fastapi.responses import JSONResponse
 from sqlmodel import Session
 from slugify import slugify

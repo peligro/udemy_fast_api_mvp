@@ -6,6 +6,10 @@ from slugify import slugify
 from utilidades.utilidades import formatear_fecha
 
 
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
 from database import get_session
 from interfaces.interfaces import GenericInterface, NegocioResponse
 from models.models import Negocio, Categoria, Estado, Usuario
@@ -22,7 +26,7 @@ async def index(session: Session = Depends(get_session)):
         NegocioResponse(
             id=dato.id,
             nombre=dato.nombre,
-            logo=dato.logo,
+            logo=f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}",
             mapa=dato.mapa,
             facebook=dato.facebook,
             descripcion=dato.descripcion,
@@ -58,7 +62,7 @@ async def show(id: int, session: Session = Depends(get_session)):
     resultado = {
         "id": dato.id,
         "nombre": dato.nombre,
-        "logo": dato.logo,
+        "logo": f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}",
         "mapa": dato.mapa,
         "facebook": dato.facebook,
         "descripcion": dato.descripcion,
