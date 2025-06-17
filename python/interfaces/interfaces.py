@@ -31,6 +31,10 @@ class NegocioResponse(BaseModel):
         from_attributes = True
 
 
+
+
+
+
 class PlatoResponse(BaseModel):
     id: int
     nombre: str
@@ -38,6 +42,33 @@ class PlatoResponse(BaseModel):
     precio: int
     foto: str
     platoscategoria: str 
+
+    class Config:
+        from_attributes = True
+
+
+class NegocioSlugResponse(BaseModel):
+    id: int
+    nombre: str
+    logo: str
+    mapa: str
+    facebook: str
+    descripcion: str
+    instagram: str
+    twitter: str
+    slug: str
+    correo: str
+    tiktok: str
+    telefono: str
+    estado_id: int
+    estado: str
+    usuario_id: int
+    usuario: str
+    categoria_id: int
+    categoria: str
+    direccion: str
+    fecha: str
+    platos: list[PlatoResponse] 
 
     class Config:
         from_attributes = True

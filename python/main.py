@@ -16,6 +16,7 @@ from router.negocio_router import router as negocio_router
 from router.negocio_logo_router import router as negocio_logo_router
 from router.platos_categoria_router import router as platos_categoria_router
 from router.platos_router import router as platos_router
+from router.carta_router import router as carta_router
 
 app = FastAPI()
 
@@ -72,6 +73,10 @@ app = FastAPI(
         {
             "name": "Platos",
             "description": "API Rest Platos"
+        },
+        {
+            "name": "Carta",
+            "description": "API Rest Carta por slug"
         }
     ]
 )
@@ -98,6 +103,7 @@ app.include_router(negocio_router)
 app.include_router(negocio_logo_router)
 app.include_router(platos_categoria_router)
 app.include_router(platos_router)
+app.include_router(carta_router)
 
 
 
