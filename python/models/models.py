@@ -11,12 +11,22 @@ class Estado(SQLModel, table=True):
     negocios: list["Negocio"] = Relationship(back_populates="estado")
 
 
+class Perfil(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    nombre: str
+
+    # Relación inversa con Usuario (opcional por ahora)
+    usuarios: list["Usuario"] = Relationship(back_populates="perfil")
+
 class Usuario(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     estado_id: int | None = Field(default=None, foreign_key="estado.id")
     estado: Optional[Estado] = Relationship(back_populates="usuarios")
 
+    perfil_id: int | None = Field(default=None, foreign_key="perfil.id")  # 🔐 Clave foránea hacia Perfil
+    perfil: Optional["Perfil"] = Relationship(back_populates="usuarios")  # ↔ Relación inversa
+    
     nombre: str
     correo: str
     telefono: str

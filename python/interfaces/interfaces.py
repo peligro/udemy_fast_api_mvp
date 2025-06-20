@@ -72,3 +72,25 @@ class NegocioSlugResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UsuarioResponse(BaseModel):
+    id: int
+    nombre: str
+    correo: str
+    telefono: str
+    estado_id: int
+    estado: str
+    perfil_id: int
+    perfil: str
+    fecha: str 
+
+    class Config:
+        from_attributes = True
+
+
+
+class LoginResponse(BaseModel):
+    estado: str
+    mensaje: str
+    data: dict | None = None
