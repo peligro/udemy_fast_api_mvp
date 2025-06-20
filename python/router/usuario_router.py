@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from sqlmodel import Session
 from sqlalchemy import desc
 
-
+from utilidades.seguridad import get_current_user
 from database import get_session
 from interfaces.interfaces import GenericInterface, UsuarioResponse
 from models.models import Usuario, Estado, Perfil
@@ -14,7 +14,7 @@ from utilidades.utilidades import formatear_fecha, generate_hash
 router = APIRouter(prefix="/usuarios", tags=["Usuario"])
 
 @router.get("/", response_model=list[UsuarioResponse])
-async def index(session: Session = Depends(get_session)):
+async def index(session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #datos = session.query(Estado).all()
     datos = session.query(Usuario).order_by(desc(Usuario.id)).all()
     resultado = [
@@ -35,7 +35,7 @@ async def index(session: Session = Depends(get_session)):
 
 
 @router.get("/{id}", response_model=UsuarioResponse)
-async def show(id: int, session: Session = Depends(get_session)):
+async def show(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Usuario, id)
     if not dato:
         raise HTTPException(
@@ -58,7 +58,7 @@ async def show(id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/", response_model=GenericInterface)
-async def create(dto: UsuarioDto, session: Session = Depends(get_session)):
+async def create(dto: UsuarioDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #validamos si existe perfil
     perfil = session.get(Perfil, dto.perfil_id)
     if not perfil:
@@ -102,7 +102,7 @@ async def create(dto: UsuarioDto, session: Session = Depends(get_session)):
 
 
 @router.put("/{id}", response_model=GenericInterface)
-async def update(id: int, dto: UsuarioDto, session: Session = Depends(get_session)):
+async def update(id: int, dto: UsuarioDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #validamos si existe perfil
     perfil = session.get(Perfil, dto.perfil_id)
     if not perfil:
@@ -145,7 +145,7 @@ async def update(id: int, dto: UsuarioDto, session: Session = Depends(get_sessio
 
 
 @router.delete("/{id}", response_model=GenericInterface)
-async def destroy(id: int, session: Session = Depends(get_session)):
+async def destroy(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Usuario, id)
     if not dato:
         raise HTTPException(

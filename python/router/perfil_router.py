@@ -3,8 +3,9 @@ from fastapi.responses import JSONResponse
 from sqlmodel import Session
 from sqlalchemy import desc
 
+from utilidades.seguridad import get_current_user
 from database import get_session
-from interfaces.interfaces import GenericInterface
+from interfaces.interfaces import GenericInterface, UsuarioResponse
 from models.models import Perfil
 from .dto.perfil_dto import PerfilDto
 
@@ -12,7 +13,7 @@ from .dto.perfil_dto import PerfilDto
 router = APIRouter(prefix="/perfil", tags=["Perfil"])
 
 @router.get("/", response_model=list[Perfil])
-async def index(session: Session = Depends(get_session)):
+async def index(session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     datos = session.query(Perfil).order_by(desc(Perfil.id)).all()
     return JSONResponse(
         status_code=status.HTTP_200_OK,
@@ -20,7 +21,7 @@ async def index(session: Session = Depends(get_session)):
     )  
 
 @router.get("/{id}", response_model=Perfil)
-async def show(id: int, session: Session = Depends(get_session)):
+async def show(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Perfil, id)
     if not dato:
         raise HTTPException(
@@ -35,7 +36,7 @@ async def show(id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/", response_model=GenericInterface)
-async def create(dto: PerfilDto, session: Session = Depends(get_session)):
+async def create(dto: PerfilDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     # Personaliza el nombre antes de guardarlo
     dto.nombre = f"{dto.nombre}"
     # 👇 Validación antes de entrar al try
@@ -66,7 +67,7 @@ async def create(dto: PerfilDto, session: Session = Depends(get_session)):
 
 
 @router.put("/{id}", response_model=GenericInterface)
-async def update(id: int, dto: PerfilDto, session: Session = Depends(get_session)):
+async def update(id: int, dto: PerfilDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Perfil, id)
     if not dato:
         raise HTTPException(
@@ -91,7 +92,7 @@ async def update(id: int, dto: PerfilDto, session: Session = Depends(get_session
 
 
 @router.delete("/{id}", response_model=GenericInterface)
-async def destroy(id: int, session: Session = Depends(get_session)):
+async def destroy(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Perfil, id)
     if not dato:
         raise HTTPException(

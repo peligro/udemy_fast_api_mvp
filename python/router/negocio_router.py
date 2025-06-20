@@ -4,7 +4,7 @@ from sqlmodel import Session
 from sqlalchemy import desc
 from slugify import slugify
 from utilidades.utilidades import formatear_fecha
-
+from utilidades.seguridad import get_current_user
 
 from dotenv import load_dotenv
 load_dotenv()

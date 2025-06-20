@@ -5,7 +5,8 @@ from sqlalchemy import desc
 from slugify import slugify
 
 from database import get_session
-from interfaces.interfaces import GenericInterface
+from utilidades.seguridad import get_current_user
+from interfaces.interfaces import GenericInterface, UsuarioResponse
 from models.models import Categoria
 from .dto.categoria_dto import CategoriaDto
 
@@ -13,7 +14,7 @@ from .dto.categoria_dto import CategoriaDto
 router = APIRouter(prefix="/categoria", tags=["Categorías"])
 
 @router.get("/", response_model=list[Categoria])
-async def index(session: Session = Depends(get_session)):
+async def index(session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     datos = session.query(Categoria).order_by(desc(Categoria.id)).all()
     return JSONResponse(
         status_code=status.HTTP_200_OK,
@@ -22,7 +23,7 @@ async def index(session: Session = Depends(get_session)):
 
 
 @router.get("/{id}", response_model=Categoria)
-async def show(id: int, session: Session = Depends(get_session)):
+async def show(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Categoria, id)
     if not dato:
         raise HTTPException(
@@ -36,7 +37,7 @@ async def show(id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/", response_model=GenericInterface)
-async def create(dto: CategoriaDto, session: Session = Depends(get_session)):
+async def create(dto: CategoriaDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     # Validación: nombre duplicado
     existe = session.query(Categoria).filter(Categoria.nombre == dto.nombre).first()
     if existe:
@@ -66,7 +67,7 @@ async def create(dto: CategoriaDto, session: Session = Depends(get_session)):
 
 
 @router.put("/{id}", response_model=GenericInterface)
-async def update(id: int, dto: CategoriaDto, session: Session = Depends(get_session)):
+async def update(id: int, dto: CategoriaDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Categoria, id)
     if not dato:
         raise HTTPException(
@@ -91,7 +92,7 @@ async def update(id: int, dto: CategoriaDto, session: Session = Depends(get_sess
 
 
 @router.delete("/{id}", response_model=GenericInterface)
-async def destroy(id: int, session: Session = Depends(get_session)):
+async def destroy(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Categoria, id)
     if not dato:
         raise HTTPException(

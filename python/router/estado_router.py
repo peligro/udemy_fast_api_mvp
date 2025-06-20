@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel import Session
 from sqlalchemy import desc
+from utilidades.seguridad import get_current_user
+
 
 from database import get_session
-from interfaces.interfaces import GenericInterface
+from interfaces.interfaces import GenericInterface, UsuarioResponse
 from models.models import Estado
 from .dto.estado_dto import EstadoDto
 
@@ -12,8 +14,9 @@ from .dto.estado_dto import EstadoDto
 router = APIRouter(prefix="/estado", tags=["Estado"])
 
 @router.get("/", response_model=list[Estado])
-async def index(session: Session = Depends(get_session)):
+async def index(session: Session = Depends(get_session), current_user: UsuarioResponse = Depends(get_current_user)):
     #datos = session.query(Estado).all()
+    print(current_user)
     datos = session.query(Estado).order_by(desc(Estado.id)).all()
     return JSONResponse(
         status_code=status.HTTP_200_OK,
@@ -21,7 +24,7 @@ async def index(session: Session = Depends(get_session)):
     )  
 
 @router.get("/{id}", response_model=Estado)
-async def show(id: int, session: Session = Depends(get_session)):
+async def show(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Estado, id)
     if not dato:
         raise HTTPException(
@@ -36,7 +39,7 @@ async def show(id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/", response_model=GenericInterface)
-async def create(dto: EstadoDto, session: Session = Depends(get_session)):
+async def create(dto: EstadoDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     # Personaliza el nombre antes de guardarlo
     dto.nombre = f"{dto.nombre}"
     # 👇 Validación antes de entrar al try
@@ -108,7 +111,7 @@ async def create(dto: EstadoDto, session: Session = Depends(get_session)):
 """
 
 @router.put("/{id}", response_model=GenericInterface)
-async def update(id: int, dto: EstadoDto, session: Session = Depends(get_session)):
+async def update(id: int, dto: EstadoDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Estado, id)
     if not dato:
         raise HTTPException(

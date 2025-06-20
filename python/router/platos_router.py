@@ -11,8 +11,10 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
+
+from utilidades.seguridad import get_current_user
 from database import get_session
-from interfaces.interfaces import GenericInterface, PlatoResponse
+from interfaces.interfaces import GenericInterface, PlatoResponse, UsuarioResponse
 from models.models import Platos, Negocio, PlatosCategoria
 
 
@@ -45,7 +47,8 @@ async def create(
                 ingredientes: Annotated[str, Form()],
                 precio: Annotated[int, Form()], 
                 file: UploadFile, 
-                session: Session = Depends(get_session)):
+                session: Session = Depends(get_session),
+                _: UsuarioResponse = Depends(get_current_user)):
     #validamos que existe el negocio
     dato = session.get(Negocio, negocio_id)
     if not dato:
@@ -128,7 +131,7 @@ async def create(
 
 #http://localhost:8050/platos?negocio_id=7
 @router.get("/", response_model=list[PlatoResponse])
-async def listar(negocio_id: int = Query(...), session: Session = Depends(get_session)):
+async def listar(negocio_id: int = Query(...), session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #validamos que existe el negocio
     dato = session.get(Negocio, negocio_id)
     if not dato:
@@ -158,7 +161,7 @@ async def listar(negocio_id: int = Query(...), session: Session = Depends(get_se
 
 
 @router.delete("/{id}", response_model=GenericInterface)
-async def destroy(id: int, session: Session = Depends(get_session)):
+async def destroy(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Platos, id)
     if not dato:
         raise HTTPException(

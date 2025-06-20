@@ -94,3 +94,6 @@ class LoginResponse(BaseModel):
     estado: str
     mensaje: str
     data: dict | None = None
+
+
+

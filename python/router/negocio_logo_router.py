@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Form, UploadFile
 from fastapi.responses import JSONResponse
 from sqlmodel import Session
-from slugify import slugify
+
 
 from typing import Annotated
 import boto3
@@ -9,9 +9,9 @@ import uuid
 from dotenv import load_dotenv
 load_dotenv()
 import os
-
+from utilidades.seguridad import get_current_user
 from database import get_session
-from interfaces.interfaces import GenericInterface
+from interfaces.interfaces import GenericInterface, UsuarioResponse
 from models.models import Negocio
 
 
@@ -36,7 +36,7 @@ else:
 
 
 @router.post("/", response_model=GenericInterface)
-async def create(id: Annotated[int, Form()], file: UploadFile, session: Session = Depends(get_session)):
+async def create(id: Annotated[int, Form()], file: UploadFile, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #validamos que existe el negocio
     dato = session.get(Negocio, id)
     if not dato:

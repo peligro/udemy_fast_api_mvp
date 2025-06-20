@@ -7,6 +7,16 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
+
+
+# Importa la tarea de SQS
+from worker.sqs_worker import iniciar_sqs_background_task
+
+
+# Importamos la configuración de OpenAPI
+from fastapi.openapi.docs import get_swagger_ui_html
+from swagger.openapi import custom_openapi
+
 #rutas
 from router.ejemplo_router import router as ejemplo_router
 from router.upload_router import router as upload_router
@@ -20,83 +30,21 @@ from router.carta_router import router as carta_router
 from router.usuario_router import router as usuario_router
 from router.login_router import router as login_router
 from router.perfil_router import router as perfil_router
+from router.recovery_router import router as recovery_router
 
-app = FastAPI()
+app = FastAPI(docs_url=None)
+
+# Inicia la tarea background
+iniciar_sqs_background_task(app)
+
 
 #swagger
-description = """
-API Rest creada desde Tamila.cl para UDEMY. 🚀
-
-Se hizo con mucho cariño
-"""
-app = FastAPI(
-    docs_url="/documentacion",
-    title="API Rest con FastAPI",
-    description=description,
-    version="0.0.1",
-    terms_of_service="https://www.cesarcancino.com",
-    contact={
-        "name": "cesarcancino.com",
-        "url": "https://www..cesarcancino.com",
-        "email": "yo@cesarcancino.com",
-    },
-    license_info={
-        "name": "Apache 2.0",
-        "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
-    },
-    openapi_tags=[
-        {
-            "name": "Ejemplo",
-            "description": "Ejemplo de API Rest"
-        },
-        {
-            "name": "Subir archivos",
-            "description": "Ejemplo upload de archivos, tanto localmente como también hacia S3 de AWS"
-        },
-        {
-            "name": "Estado",
-            "description": "API Rest Estado"
-        },
-        {
-            "name": "Categorías",
-            "description": "API Rest Categorías"
-        },
-        {
-            "name": "Negocios",
-            "description": "API Rest Negocios"
-        },
-        {
-            "name": "Negocios logo",
-            "description": "API Rest para administrar los logos de los negocios"
-        },
-        {
-            "name": "Platos Categorías",
-            "description": "API Rest Platos Categorías"
-        },
-        {
-            "name": "Platos",
-            "description": "API Rest Platos"
-        },
-        {
-            "name": "Carta",
-            "description": "API Rest Carta por slug"
-        },
-        {
-            "name": "Usuario",
-            "description": "API Rest Usuarios"
-        },
-        {
-            "name": "Login",
-            "description": "API Rest Login"
-        },
-        {
-            "name": "Perfil",
-            "description": "API Rest Perfil"
-        }
-    ]
-)
-
-#docker exec -it python_dev uvicorn main:app --host 0.0.0.0 --port 8050 --reload
+# Aplicamos la configuración de OpenAPI
+app.openapi = custom_openapi(app)
+# Middleware para servir la documentación de Swagger
+@app.get("/documentacion", include_in_schema=False)
+async def swagger_documentation():
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="FastAPI - Documentación")
 
 #@app.get("/", status_code=status.HTTP_200_OK)
 @app.get("/")
@@ -122,8 +70,7 @@ app.include_router(carta_router)
 app.include_router(usuario_router)
 app.include_router(login_router)
 app.include_router(perfil_router)
-
-
+app.include_router(recovery_router)
 
 
 #custom 404
