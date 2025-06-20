@@ -41,7 +41,7 @@ else:
 
 
 @router.post("/update/{token}")
-async def update(token: str, dto: RecoveryUpdateDto, session: Session = Depends(get_session)):
+async def update(token: str, dto: RecoveryUpdateDto, session: Session = Depends(get_session),  _: UsuarioResponse = Depends(get_current_user)):
     dato = session.exec(
         select(Usuario).where(Usuario.token == token, Usuario.estado_id == 1)
     ).first()
