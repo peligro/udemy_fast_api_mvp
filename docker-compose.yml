@@ -19,6 +19,24 @@ services:
     networks:
       - red_fastapi
   
+
+  node:
+    build:
+      context: ./docker/node
+    container_name: node_service
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./node:/app
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    networks:
+      - red_fastapi
+    depends_on:
+      - postgres
+      - localstack
+
   python:
     build:
       context: ./docker/python

@@ -1,5 +1,3 @@
-# docker/python/Dockerfile
-
 FROM python:3.12-slim
 
 # Actualiza e instala paquetes necesarios

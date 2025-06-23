@@ -2,6 +2,8 @@ from fastapi import FastAPI, status, Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 #dotenv
 from dotenv import load_dotenv
 load_dotenv()
@@ -37,6 +39,15 @@ app = FastAPI(docs_url=None)
 # Inicia la tarea background
 iniciar_sqs_background_task(app)
 
+
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todos los orígenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos
+    allow_headers=["*"],  # Permite todos los encabezados
+)
 
 #swagger
 # Aplicamos la configuración de OpenAPI
