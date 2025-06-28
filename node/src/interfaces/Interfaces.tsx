@@ -15,3 +15,7 @@ export interface UsuarioInterface {
     perfil: string,
     fecha: string
 }
+export interface PerfilInterface {
+    id?: number;
+    nombre: string;
+}

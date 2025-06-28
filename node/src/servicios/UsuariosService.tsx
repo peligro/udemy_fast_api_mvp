@@ -1,5 +1,6 @@
 export async function getDatosPorId(id:number)
 {
+    
     let respuesta = await fetch(`${import.meta.env.VITE_API_URL}usuarios/${id}`,
         {
             method:'GET',
@@ -7,3 +8,4 @@ export async function getDatosPorId(id:number)
         });
     return [await respuesta.json(), respuesta.status];
 }
+

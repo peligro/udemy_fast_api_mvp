@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Form } from "react-bootstrap";
 import { sendDataLogin } from "../servicios/LoginService";
 import AuthContext from "../context/AuthProvider";
+import AlertCustom, { type AlertCustomInterface } from "../custom/AlertCustom";
 
 const Login = () => {
     const context = useContext(AuthContext);
@@ -16,40 +17,78 @@ const Login = () => {
     const [password, setPassword] = useState("");
     let [boton, setBoton] = useState("block");
     let [preloader, setPreloader] = useState("none");
+    //modal
+    const [alertData, setAlertData] = useState<AlertCustomInterface>({
+        estado: false,
+        titulo: "",
+        detalle: "",
+        headerBg: "bg-primary" // Valor por defecto
+    });
+     
+    const handleCloseModal = () => {
+        setAlertData(prev => ({
+            ...prev,
+            estado: false
+        }));
+
+    };
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
 
         if (correo.length == 0 && correo == "") {
-            alert("El campo E-Mail es obligatorio");
+
+            setAlertData({
+                estado: true,
+                titulo: "Alerta !!!",
+                detalle: "El campo correo es obligatorio",
+                headerBg: "bg-danger" 
+            });
             setCorreo("");
             return false;
         }
         if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(correo)) {
-            alert("El E-Mail ingresado no es válido");
+            setAlertData({
+                estado: true,
+                titulo: "Alerta !!!",
+                detalle: "El E-Mail ingresado no es válido",
+                headerBg: "bg-danger" 
+            });
             setCorreo("");
             return false;
         }
         if (password.length == 0 && password == "") {
-            alert("El campo Contraseña es obligatorio");
+            setAlertData({
+                estado: true,
+                titulo: "Alerta !!!",
+                detalle: "El campo contraseña es obligatorio",
+                headerBg: "bg-danger"
+            });
             setPassword("");
             return false;
         }
         setBoton("none");
         setPreloader("block");
         //console.log(`Todo ok | correo=${correo} | password=${password}`);
-        const peticion= await sendDataLogin({correo:correo, password:password});
-        if(peticion[1]==200)
-        {
+        const peticion = await sendDataLogin({ correo: correo, password: password });
+        if (peticion[1] == 200) {
             //console.log(`Todo ok | id=${peticion[0].data.id} | nombre=${peticion[0].data.nombre} | token=${peticion[0].data.token}`);
             handleIniciarSesion(peticion[0].data.id, peticion[0].data.nombre, peticion[0].data.token);
-            window.location.href="/";
-        }else
-        {
-            alert("Ocurrió un error inesperado");
-            window.location.href="/login";
+            window.location.href = "/";
+        } else {
+            setAlertData({
+                estado: true,
+                titulo: "Alerta !!!",
+                detalle: "Ocurrió un error inesperado",
+                headerBg: "bg-danger"
+            });
+            setInterval(() => {
+                window.location.href = "/login";
+            }, 2000);
         }
     };
+   
+
     return (
         <>
             <main className="d-flex w-100">
@@ -61,7 +100,7 @@ const Login = () => {
                                 <div className="text-center mt-4">
                                     <h1 className="h2">{import.meta.env.VITE_API_TITULO}</h1>
                                     <p className="lead">
-                                        Desarrollado con FastAPI de Python y React 19
+                                        Desarrollado con FastAPI de Python, PostgreSQL, SQLModel, Alembic y React 19 con Typescript
                                     </p>
                                 </div>
 
@@ -106,6 +145,14 @@ const Login = () => {
                     </div>
                 </div>
             </main>
+            {/*modal */}
+            <AlertCustom
+                estado={alertData.estado}
+                titulo={alertData.titulo}
+                detalle={alertData.detalle}
+                onClose={handleCloseModal}
+                headerBg={alertData.headerBg} // Pasa el valor del estado
+            />
         </>
     )
 }
