@@ -15,7 +15,21 @@ export interface UsuarioInterface {
     perfil: string,
     fecha: string
 }
+export interface UsuarioDtoInterface {
+    id?:number;
+    nombre: string,
+    correo: string,
+    telefono: string,
+    password:string,
+    perfil_id: number,
+    estado_id?:number,
+    editar?:number,
+}
 export interface PerfilInterface {
+    id?: number;
+    nombre: string;
+}
+export interface EstadoInterface {
     id?: number;
     nombre: string;
 }

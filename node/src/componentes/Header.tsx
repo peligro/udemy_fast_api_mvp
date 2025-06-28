@@ -99,10 +99,7 @@ const Header = () => {
                                     className="avatar img-fluid rounded me-1" />
                             </a>
                             <div className="dropdown-menu dropdown-menu-end">
-
-                                <a className="dropdown-item" title="Cerrar sesión" >
-                                    <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Mi perfil</a>
-                                <hr />
+ 
                                 <Link className="dropdown-item" title="Cerrar sesión" to="#" onClick={()=>{handleCerrarSesion()}}>
                                     <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Cerrar sesión</Link>
                             </div>

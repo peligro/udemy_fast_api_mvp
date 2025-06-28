@@ -73,7 +73,7 @@ const Login = () => {
         const peticion = await sendDataLogin({ correo: correo, password: password });
         if (peticion[1] == 200) {
             //console.log(`Todo ok | id=${peticion[0].data.id} | nombre=${peticion[0].data.nombre} | token=${peticion[0].data.token}`);
-            handleIniciarSesion(peticion[0].data.id, peticion[0].data.nombre, peticion[0].data.token);
+            handleIniciarSesion(peticion[0].data.id, peticion[0].data.nombre, peticion[0].data.token, peticion[0].data.perfil_id);
             window.location.href = "/";
         } else {
             setAlertData({

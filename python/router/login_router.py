@@ -53,6 +53,7 @@ async def login(dto: LoginDto, session: Session = Depends(get_session)):
             "data": {
                 "id": dato.id,
                 "nombre": dato.nombre,
+                "perfil_id":dato.perfil_id,
                 "token": token
             }
         }

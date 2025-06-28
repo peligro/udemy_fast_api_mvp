@@ -123,13 +123,15 @@ async def update(id: int, dto: UsuarioDto, session: Session = Depends(get_sessio
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Recurso no disponible"
         )
-    try:
-        dato.nombre = dto.nombre
-        dato.perfil_id=dto.perfil_id
-        dato.estado_id=dto.estado_id
-        dato.correo=dto.correo
-        dato.telefono=dto.telefono
+    dato.nombre = dto.nombre
+    dato.perfil_id=dto.perfil_id
+    dato.estado_id=dto.estado_id
+    dato.correo=dto.correo
+    dato.telefono=dto.telefono
+    if dto.editar==1:
         dato.password=generate_hash(dto.password)
+    try:
+       
         session.commit()
         session.refresh(dato)
         return JSONResponse(

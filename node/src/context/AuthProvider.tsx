@@ -6,7 +6,7 @@ import AlertCustom from '../custom/AlertCustom';
 // Define el tipo para el contexto de autenticación
 type AuthContextType = {
   auth: boolean;
-  handleIniciarSesion: (id:string, nombre:string, token:string) => void;
+  handleIniciarSesion: (id:string, nombre:string, token:string, perfil_id_:string) => void;
   handleEstasLogueado: () => void;
   handleCerrarSesion:()=>void;
   handleValidarAcceso:(perfil_id:string)=>void;
@@ -30,14 +30,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [auth, setAuth] = useState<boolean>(
     localStorage.getItem('menu_flaites_id') != null
   );
+  
   //modal
   const [confirmData, setConfirmData] = useState<AlertCustomInterface | null>(null);
-    const handleIniciarSesion=(id:string, nombre:string, token:string)=>
+    const handleIniciarSesion=(id:string, nombre:string, token:string, perfil_id:string)=>
     {
         localStorage.setItem('menu_flaites_id', id);
         localStorage.setItem('menu_flaites_nombre', nombre);
         localStorage.setItem('menu_flaites_token', token);
-        localStorage.setItem('menu_flaites_perfil_id', '');
+        localStorage.setItem('menu_flaites_perfil_id', perfil_id);
         setAuth(true);
     };
     const handleValidarAcceso=(perfil_id:string)=>
