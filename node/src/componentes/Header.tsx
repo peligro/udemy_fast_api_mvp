@@ -5,6 +5,7 @@ import { getDatosPorId } from '../servicios/UsuariosService';
 import type { UsuarioInterface } from '../interfaces/Interfaces';
 import AuthContext from '../context/AuthProvider';
 import { Link } from 'react-router-dom';
+import { errorSesion } from '../helpers/Helpers';
 const Header = () => {
     const [valorMenu, setvalorMenu] = useState('Ocultar');
     const [iconoMenu, setIconoMenu] = useState('fa-long-arrow-alt-left');
@@ -43,11 +44,20 @@ const Header = () => {
         const fetchUserData = async () => {
             const id = localStorage.getItem('menu_flaites_id');
             if (id) {
-                const [data, status] = await getDatosPorId(Number(id));
+                try {
+                    const [data, status] = await getDatosPorId(Number(id));
                 if (status === 200) {
+                    if(data.estado_id==2)
+                        {
+                           errorSesion(); 
+                        }
                     setUserData(data);
                     localStorage.setItem('menu_flaites_perfil_id', `${data.perfil_id}`);
                 }
+                } catch (error) {
+                    errorSesion();
+                }
+                
             }
         };
 

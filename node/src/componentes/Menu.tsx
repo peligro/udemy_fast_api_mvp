@@ -29,13 +29,13 @@ const Menu = () => {
                 </li>
                 <li className="sidebar-header">Negocios</li>
                 <li className="sidebar-item ">
-                  <Link className="sidebar-link" to="/categorias" title="Categorías">
+                  <Link className="sidebar-link" to="/negocios/categorias" title="Categorías">
                     <i className="align-middle  far fa-list"></i>
                     <span className="align-middle">Categorías</span>
                   </Link>
                 </li>
                 <li className="sidebar-item ">
-                  <Link className="sidebar-link" to="/negocios" title="Negocios">
+                  <Link className="sidebar-link" to="/negocios/negocios" title="Negocios">
                     <i className="align-middle  far fa-list-alt"></i>
                     <span className="align-middle">Negocios</span>
                   </Link>

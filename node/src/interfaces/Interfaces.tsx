@@ -33,3 +33,15 @@ export interface EstadoInterface {
     id?: number;
     nombre: string;
 }
+export interface CategoriaInterface {
+    id?: number;
+    nombre: string;
+    slug?:string;
+}
+export interface RestablecerInterface {
+    correo: string;
+}
+export interface RestablecerRecoveryUpdateInterface {
+    token: string;
+    password:string;
+}

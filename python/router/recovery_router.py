@@ -41,7 +41,7 @@ else:
 
 
 @router.post("/update/{token}")
-async def update(token: str, dto: RecoveryUpdateDto, session: Session = Depends(get_session),  _: UsuarioResponse = Depends(get_current_user)):
+async def update(token: str, dto: RecoveryUpdateDto, session: Session = Depends(get_session)):
     dato = session.exec(
         select(Usuario).where(Usuario.token == token, Usuario.estado_id == 1)
     ).first()
@@ -71,7 +71,7 @@ async def update(token: str, dto: RecoveryUpdateDto, session: Session = Depends(
 
 
 @router.post("/restablecer", response_model=GenericInterface)
-async def create(dto: RecoveryDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
+async def create(dto: RecoveryDto, session: Session = Depends(get_session) ):
     # Buscar al usuario por correo
     dato = session.exec(
         select(Usuario).where(Usuario.correo == dto.correo, Usuario.estado_id == 1)

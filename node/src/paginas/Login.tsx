@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { sendDataLogin } from "../servicios/LoginService";
 import AuthContext from "../context/AuthProvider";
 import AlertCustom, { type AlertCustomInterface } from "../custom/AlertCustom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const context = useContext(AuthContext);
@@ -133,7 +134,8 @@ const Login = () => {
                                                         <img src="/img/load.gif" alt="" />
                                                     </div>
 
-
+                                                        <hr />
+                                                        <Link to="/restablecer">Restablecer contraseña</Link>
                                                 </div>
                                             </Form>
                                         </div>
