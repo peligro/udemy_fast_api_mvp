@@ -53,6 +53,8 @@ const Header = () => {
                         }
                     setUserData(data);
                     localStorage.setItem('menu_flaites_perfil_id', `${data.perfil_id}`);
+                }else{
+                    errorSesion();
                 }
                 } catch (error) {
                     errorSesion();

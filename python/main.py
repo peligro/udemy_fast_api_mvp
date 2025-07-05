@@ -60,7 +60,7 @@ async def swagger_documentation():
 #@app.get("/", status_code=status.HTTP_200_OK)
 @app.get("/")
 def index():
-    print(os.getenv('AWS_REGION'))
+    #print(os.getenv('AWS_REGION'))
     #return {"estado": "ok", "mensaje": "Fullstack FastAPI + SQLAlchemy + React + AWS"}
     return JSONResponse(
         status_code=status.HTTP_200_OK,

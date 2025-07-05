@@ -16,6 +16,8 @@ import Restablecer from './paginas/restablecer/Restablecer';
 import Error404 from './paginas/Error404';
 import Error405 from './paginas/Error405';
 import RecoveryUpdate from './paginas/restablecer/RecoveryUpdate';
+import Negocios, {loader as negociosListar} from './paginas/negocios/Negocios';
+import NegociosFormulario, {loader as negociosFormularioListar} from './paginas/negocios/NegociosFormulario';
 const router = createBrowserRouter(
   [
     {
@@ -48,6 +50,18 @@ const router = createBrowserRouter(
           path:"/negocios/categorias",
           element: <Categorias />,
           loader: categoriasListar,
+          errorElement: <Error405 />
+        },
+        {
+          path:"/negocios/listar",
+          element: <Negocios />,
+          loader: negociosListar,
+          errorElement: <Error405 />
+        },
+        {
+          path:"/negocios/formulario",
+          element: <NegociosFormulario />,
+          loader: negociosFormularioListar,
           errorElement: <Error405 />
         },
         {

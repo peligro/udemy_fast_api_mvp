@@ -11,7 +11,7 @@ load_dotenv()
 import os
 
 from database import get_session
-from interfaces.interfaces import GenericInterface, NegocioResponse
+from interfaces.interfaces import GenericInterface, NegocioResponse, UsuarioResponse
 from models.models import Negocio, Categoria, Estado, Usuario
 from .dto.negocio_dto import NegocioDto
 
@@ -19,7 +19,7 @@ from .dto.negocio_dto import NegocioDto
 router = APIRouter(prefix="/negocio", tags=["Negocios"])
 
 @router.get("/", response_model=list[NegocioResponse])
-async def index(session: Session = Depends(get_session)):
+async def index(session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     datos = session.query(Negocio).order_by(desc(Negocio.id)).all()
     
     resultado = [
@@ -51,8 +51,8 @@ async def index(session: Session = Depends(get_session)):
 
 
 
-@router.get("/{id}", response_model=list[NegocioResponse])
-async def show(id: int, session: Session = Depends(get_session)):
+@router.get("/{id}", response_model=NegocioResponse)
+async def show(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Negocio, id)
     if not dato:
         raise HTTPException(
@@ -82,7 +82,7 @@ async def show(id: int, session: Session = Depends(get_session)):
         "fecha": formatear_fecha(dato.fecha)
     }
 
-    return [resultado]
+    return resultado
 
 """
 @router.get("/{id}", response_model=Negocio)
@@ -98,7 +98,7 @@ async def show(id: int, session: Session = Depends(get_session)):
 
 
 @router.post("/", response_model=GenericInterface)
-async def create(dto: NegocioDto, session: Session = Depends(get_session)):
+async def create(dto: NegocioDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #validamos si existe categoría
     categoria = session.get(Categoria, dto.categoria_id)
     if not categoria:
@@ -129,7 +129,7 @@ async def create(dto: NegocioDto, session: Session = Depends(get_session)):
         correo=dto.correo,
         telefono=dto.telefono,
         direccion=dto.direccion,
-        logo="default.png",
+        logo="94972b65-2bca-4804-b3dd-7ce927320be4.jpg",
         facebook=dto.facebook,
         instagram=dto.instagram,
         twitter=dto.twitter,
@@ -157,7 +157,7 @@ async def create(dto: NegocioDto, session: Session = Depends(get_session)):
 
 
 @router.put("/{id}", response_model=GenericInterface)
-async def update(id: int, dto: NegocioDto, session: Session = Depends(get_session)):
+async def update(id: int, dto: NegocioDto, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     #validamos si existe categoría
     categoria = session.get(Categoria, dto.categoria_id)
     if not categoria:
@@ -190,6 +190,7 @@ async def update(id: int, dto: NegocioDto, session: Session = Depends(get_sessio
         dato.slug = slugify(dto.nombre)
         dato.categoria_id=dto.categoria_id
         dato.estado_id=dto.estado_id
+        dato.usuario_id=dto.usuario_id
         dato.correo=dto.correo
         dato.telefono=dto.telefono
         dato.direccion=dto.direccion
@@ -197,7 +198,7 @@ async def update(id: int, dto: NegocioDto, session: Session = Depends(get_sessio
         dato.twitter=dto.twitter
         dato.instagram=dto.instagram
         dato.mapa=dto.mapa,
-        dato.descripcion=dato.descripcion
+        dato.descripcion=dto.descripcion
         session.commit()
         session.refresh(dato)
         return JSONResponse(
@@ -213,7 +214,7 @@ async def update(id: int, dto: NegocioDto, session: Session = Depends(get_sessio
 
 
 @router.delete("/{id}", response_model=GenericInterface)
-async def destroy(id: int, session: Session = Depends(get_session)):
+async def destroy(id: int, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
     dato = session.get(Negocio, id)
     if not dato:
         raise HTTPException(

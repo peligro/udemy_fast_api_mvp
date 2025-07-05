@@ -74,7 +74,7 @@ async def create(id: Annotated[int, Form()], file: UploadFile, session: Session 
         )
     #actualizamos el valor del logo en la BD
     try:
-        dato.logo = nombre
+        dato.logo = f"{nombre}"
         session.commit()
         session.refresh(dato)
         
