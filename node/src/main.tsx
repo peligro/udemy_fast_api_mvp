@@ -13,11 +13,13 @@ import Usuarios, {loader as usuariosListar} from './paginas/Usuarios';
 import Categorias, {loader as categoriasListar}  from './paginas/negocios/Categorias';
 
 import Restablecer from './paginas/restablecer/Restablecer';
-import Error404 from './paginas/Error404';
-import Error405 from './paginas/Error405';
+
 import RecoveryUpdate from './paginas/restablecer/RecoveryUpdate';
 import Negocios, {loader as negociosListar} from './paginas/negocios/Negocios';
 import NegociosFormulario, {loader as negociosFormularioListar} from './paginas/negocios/NegociosFormulario';
+import Carta, {loader as cartaFormularioListar} from './paginas/carta/Carta';
+import Error404 from './paginas/Error404';
+import Error405 from './paginas/Error405';
 const router = createBrowserRouter(
   [
     {
@@ -77,7 +79,13 @@ const router = createBrowserRouter(
     {
       path:"/recovery/update/:token",
       element: <RecoveryUpdate />
-    }
+    },
+    {
+          path:"/carta/:slug",
+          element: <Carta />,
+          loader: cartaFormularioListar,
+          errorElement: <Error405 />
+        }
   ]);
 
 const rootElement = document.getElementById("root");

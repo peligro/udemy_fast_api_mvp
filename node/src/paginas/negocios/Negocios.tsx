@@ -90,7 +90,7 @@ const Negocios = () => {
          
         
         // Llamar al servicio para subir el logo
-        const response = await setLogo(negocioDetalle?.id || 0, fileInput);
+        await setLogo(negocioDetalle?.id || 0, fileInput);
         
         // Éxito
         setAlertData({
@@ -241,6 +241,7 @@ const Negocios = () => {
                                                             <th>Nombre</th>
                                                             <th>Logo</th>
                                                             <th>Detalle</th>
+                                                            <th>Carta</th>
                                                             <th>Fecha</th>
                                                             <th>Acciones</th>
                                                         </tr>
@@ -267,11 +268,16 @@ const Negocios = () => {
                                                                     </ImagenCustom>
 
                                                                 </td>
-                                                                <td style={{ textAlign: "center" }}>
+                                                                 <td style={{ textAlign: "center" }}>
                                                                     <Link to="#" title={`Detalle ${dato.nombre}`} onClick={() => dato.id && handleShow(dato.id)}>
                                                                         <i className="fas fa-search"></i>
                                                                     </Link>
 
+                                                                </td>
+                                                                <td style={{ textAlign: "center" }}>
+                                                                    <a href={`/carta/${dato.slug}`} target="_blank" title={`Carta ${dato.nombre}`}>
+                                                                    <i className="fas fa-link"></i>
+                                                                    </a>
                                                                 </td>
                                                                 <td>{dato.fecha}</td>
                                                                 <td className="text-center">

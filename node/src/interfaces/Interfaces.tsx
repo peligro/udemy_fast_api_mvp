@@ -67,3 +67,37 @@ export interface NegociosInterface {
     direccion: string,
     fecha?: string
 }
+export interface PlatoInterface {
+    id: number;
+    nombre: string;
+    ingredientes: string;
+    precio: number;
+    foto: string;
+    platoscategoria: string;
+}
+export interface CartaMenuInterface {
+    id: number;
+    nombre: string;
+    logo: string;
+    mapa: string;
+    facebook: string;
+    descripcion: string;
+    instagram: string;
+    twitter: string;
+    slug: string;
+    correo: string;
+    tiktok: string;
+    telefono: string;
+    estado_id: number;
+    estado: string;
+    usuario_id: number;
+    usuario: string;
+    categoria_id: number;
+    categoria: string;
+    direccion: string;
+    fecha: string;
+    platos: PlatoInterface[];
+}
+export interface LoaderParams {
+    slug: string;
+}

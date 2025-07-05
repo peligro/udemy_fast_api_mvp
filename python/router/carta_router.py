@@ -4,14 +4,13 @@ from sqlmodel import Session, select
 from sqlalchemy import desc
 
 from utilidades.utilidades import formatear_fecha
-from utilidades.seguridad import get_current_user
 
 from dotenv import load_dotenv
 load_dotenv()
 import os
 
 from database import get_session
-from interfaces.interfaces import  NegocioSlugResponse, PlatoResponse, UsuarioResponse
+from interfaces.interfaces import  NegocioSlugResponse, PlatoResponse
 from models.models import Negocio, Platos
 
 
@@ -19,7 +18,7 @@ router = APIRouter(prefix="/carta-menu", tags=["Carta"])
 
 
 @router.get("/{slug}", response_model=NegocioSlugResponse)
-async def show(slug: str, session: Session = Depends(get_session), _: UsuarioResponse = Depends(get_current_user)):
+async def show(slug: str, session: Session = Depends(get_session)):
     dato = session.exec(
         select(Negocio).where(Negocio.slug == slug, Negocio.estado_id == 1)
     ).first()

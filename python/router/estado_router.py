@@ -16,7 +16,7 @@ router = APIRouter(prefix="/estado", tags=["Estado"])
 @router.get("/", response_model=list[Estado])
 async def index(session: Session = Depends(get_session), current_user: UsuarioResponse = Depends(get_current_user)):
     #datos = session.query(Estado).all()
-    print(current_user)
+    #print(current_user)
     datos = session.query(Estado).order_by(desc(Estado.id)).all()
     return JSONResponse(
         status_code=status.HTTP_200_OK,
