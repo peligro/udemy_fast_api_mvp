@@ -12,11 +12,21 @@ export const loader: LoaderFunction = async ({ params }) => {
 const Carta = () => {
     const [datos] = useLoaderData() as [CartaMenuInterface];
     const categorias = Array.from(new Set(datos.platos.map(plato => plato.platoscategoria)));
-     
+
     return (
         <section id="menu" className="menu section-bg">
             <div className="container">
-                <div className="section-title">
+                <div className="section-title text-center">
+                    <img
+                        src={datos.logo}
+                        alt={datos.nombre}
+                        className="img-fluid mb-3"
+                        style={{
+                            maxWidth: '200px',
+                            height: 'auto',
+                            borderRadius: '8px'
+                        }}
+                    />
                     <h2>{datos.nombre}</h2>
                     <p>{datos.descripcion}</p>
                 </div>
@@ -24,8 +34,7 @@ const Carta = () => {
                 <div className="row">
                     <div className="col-lg-12 d-flex justify-content-center">
                         <ul className="nav nav-tabs mb-5">
-
-                           {categorias.map((categoria, index) => (
+                            {categorias.map((categoria, index) => (
                                 <li className="nav-item" key={index}>
                                     <a className="nav-link" data-bs-toggle="tab" href={`#categoria-${index + 1}`} title={categoria}>
                                         {categoria}
@@ -86,4 +95,3 @@ const Carta = () => {
 };
 
 export default Carta;
- 

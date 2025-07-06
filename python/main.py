@@ -33,6 +33,7 @@ from router.usuario_router import router as usuario_router
 from router.login_router import router as login_router
 from router.perfil_router import router as perfil_router
 from router.recovery_router import router as recovery_router
+from router.negocio_por_usuario_router import router as negocio_por_usuario_router
 
 app = FastAPI(docs_url=None)
 
@@ -82,6 +83,8 @@ app.include_router(usuario_router)
 app.include_router(login_router)
 app.include_router(perfil_router)
 app.include_router(recovery_router)
+app.include_router(negocio_por_usuario_router)
+
 
 
 #custom 404

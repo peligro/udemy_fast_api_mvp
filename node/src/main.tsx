@@ -20,6 +20,8 @@ import NegociosFormulario, {loader as negociosFormularioListar} from './paginas/
 import Carta, {loader as cartaFormularioListar} from './paginas/carta/Carta';
 import Error404 from './paginas/Error404';
 import Error405 from './paginas/Error405';
+import PlatosCategorias, {loader as platosCategoriasListar} from './paginas/negocios/PlatosCategorias';
+import Platos, {loader as platosListar}  from './paginas/clientes/Platos';
 const router = createBrowserRouter(
   [
     {
@@ -65,6 +67,18 @@ const router = createBrowserRouter(
           element: <NegociosFormulario />,
           loader: negociosFormularioListar,
           errorElement: <Error405 />
+        },
+        {
+          path:"/negocios/platos-categorias",
+          element: <PlatosCategorias />,
+          loader: platosCategoriasListar,
+          errorElement: <Error405 />
+        },
+        {
+          path:"/mi-negocio",
+          element: <Platos/>,
+          loader: platosListar, 
+          errorElement:<Error405 />
         },
         {
           path:'*',

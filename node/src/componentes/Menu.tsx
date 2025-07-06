@@ -2,16 +2,16 @@ import { Link, useLocation } from "react-router-dom";
 
 const Menu = () => {
   const location = useLocation();
-  
+
   // Función para determinar si un ítem está activo
-  const isActive = (path:any, exact = false) => {
-    return exact 
+  const isActive = (path: any, exact = false) => {
+    return exact
       ? location.pathname === path
       : location.pathname.startsWith(path);
   };
   return (
     <>
-    <nav id="sidebar" className="sidebar js-sidebar ">
+      <nav id="sidebar" className="sidebar js-sidebar ">
         <div className="sidebar-content js-simplebar">
           <Link className="sidebar-brand" to="/">
             <span className="align-middle">
@@ -48,16 +48,26 @@ const Menu = () => {
                     <span className="align-middle">Negocios</span>
                   </Link>
                 </li>
+                <li className={`sidebar-item ${isActive("/negocios/platos-categorias") ? "active" : ""}`}>
+                  <Link className="sidebar-link" to="/negocios/platos-categorias" title="Platos Categorías">
+                    <i className="align-middle fas fa-utensils"></i>
+                    <span className="align-middle">Platos Categorías</span>
+                  </Link>
+                </li>
+              </>
+            )}
+            {localStorage.getItem("menu_flaites_perfil_id") == "2" && (
+              <>
+                <li className="sidebar-header">Mi Negocio</li>
+                <li className={`sidebar-item ${isActive("/mi-negocio") ? "active" : ""}`}>
+                  <Link className="sidebar-link" to="/mi-negocio" title="Mi Negocio">
+                    <i className="align-middle far fa-list-alt"></i>
+                    <span className="align-middle">Mi Negocio</span>
+                  </Link>
+                </li>
               </>
             )}
 
-            <li className="sidebar-header">Mi Negocio</li>
-            <li className={`sidebar-item ${isActive("/mi-negocio") ? "active" : ""}`}>
-              <Link className="sidebar-link" to="/mi-negocio" title="Mi Negocio">
-                <i className="align-middle far fa-list-alt"></i>
-                <span className="align-middle">Mi Negocio</span>
-              </Link>
-            </li>
           </ul>
         </div>
       </nav>

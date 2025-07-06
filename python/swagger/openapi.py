@@ -39,6 +39,7 @@ OPENAPI_TAGS = [
     {"name": "Categorías", "description": "API Rest Categorías"},
     {"name": "Negocios", "description": "API Rest Negocios"},
     {"name": "Negocios logo", "description": "Administrar logos de negocios"},
+    {"name":"Negocio por Usuario",  "description":"Ver negocio por usuario"},
     {"name": "Platos Categorías", "description": "API Rest Platos Categorías"},
     {"name": "Platos", "description": "API Rest Platos"},
     {"name": "Carta", "description": "API Rest Carta por slug"},

@@ -101,3 +101,16 @@ export interface CartaMenuInterface {
 export interface LoaderParams {
     slug: string;
 }
+export interface PlatosCategoriaInterface {
+    id?: number;
+    nombre: string;
+    slug?: string;
+}
+export interface PlatosInterface {
+    id?: number;
+    nombre: string;
+    ingredientes: string;
+    precio: number;
+    foto?: string;
+    platoscategoria: string;
+}
