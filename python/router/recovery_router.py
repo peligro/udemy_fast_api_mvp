@@ -91,7 +91,8 @@ async def create(dto: RecoveryDto, session: Session = Depends(get_session) ):
         dato.token = token
         session.commit()
         session.refresh(dato)
-
+        # Generamos un MessageGroupId único
+        message_group_id = str(int(time.time()))
         # Enviamos mensaje a la cola SQS
         sqs_client.send_message(
             QueueUrl=os.getenv("SQS_ENVIO_CORREO"),
@@ -105,7 +106,9 @@ async def create(dto: RecoveryDto, session: Session = Depends(get_session) ):
                     'DataType': 'String',
                     'StringValue': token
                 }
-            }
+            },
+            MessageGroupId=message_group_id,
+            MessageDeduplicationId=str(uuid.uuid4()) 
         )
 
         
