@@ -87,7 +87,7 @@ async def create(id: Annotated[int, Form()], file: UploadFile, session: Session 
     
     #borramos el archivo anterior de la BD
     #print(f"logo={logo} | dato.logo = {dato.logo}")
-    if logo=="default.png":
+    if logo=="94972b65-2bca-4804-b3dd-7ce927320be4.jpg":
         pass
     else:
         try:
