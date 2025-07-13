@@ -26,7 +26,11 @@ async def index(session: Session = Depends(get_session), _: UsuarioResponse = De
         NegocioResponse(
             id=dato.id,
             nombre=dato.nombre,
-            logo=f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}",
+            logo=(
+                f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}"
+                if os.getenv('ENVIRONMENT') == "local"
+                else f"https://{os.getenv('S3_BUCKET_NAME')}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/archivos/{dato.logo}"
+            ),
             mapa=dato.mapa,
             facebook=dato.facebook,
             descripcion=dato.descripcion,
@@ -59,10 +63,14 @@ async def show(id: int, session: Session = Depends(get_session), _: UsuarioRespo
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"estado": "error", "mensaje": "Recurso no disponible"}
         )
+    if os.getenv('ENVIRONMENT') == "local":
+        logo_url = f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}"
+    else:
+        logo_url = f"https://{os.getenv('S3_BUCKET_NAME')}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/archivos/{dato.logo}"
     resultado = {
         "id": dato.id,
         "nombre": dato.nombre,
-        "logo": f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}",
+        "logo": logo_url,
         "mapa": dato.mapa,
         "facebook": dato.facebook,
         "descripcion": dato.descripcion,

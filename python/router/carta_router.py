@@ -44,11 +44,14 @@ async def show(slug: str, session: Session = Depends(get_session)):
             platoscategoria=plato.platoscategoria.nombre if plato.platoscategoria else None
         ) for plato in platos
     ]
-
+    if os.getenv('ENVIRONMENT') == "local":
+        logo_url = f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}"
+    else:
+        logo_url = f"https://{os.getenv('S3_BUCKET_NAME')}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/archivos/{dato.logo}"
     resultado = {
         "id": dato.id,
         "nombre": dato.nombre,
-        "logo": f"{os.getenv('AWS_BUCKET_URL')}{os.getenv('S3_BUCKET_NAME')}/archivos/{dato.logo}",
+        "logo": logo_url,
         "mapa": dato.mapa,
         "facebook": dato.facebook,
         "descripcion": dato.descripcion,
